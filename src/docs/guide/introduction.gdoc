@@ -1,0 +1,78 @@
+The Grails Yeoman-Frontend is a plugin used for managing and processing frontend developed with Yeoman. The plugin integrates the frontend (preserving the Yeoman\'s directory structure) with a Grails web container during development of Grails backend application; it assembles the frontend into a Web Application Archive (WAR) file during deployment of Grails application.
+
+h3. Introduction
+
+Yeoman-Frontend is intended to integrate frontend developed with Yeoman with a Grails backend application.
+The Yeoman build process replaces [resources-plugin|http://grails.org/plugin/resources] or [asset-pipeline-plugin|http://grails.org/plugin/asset-pipeline]
+
+In the Grails development mode, the plugin runs the @*grunt serve*@ command in the background to allow Grunt's tasks to process on-the-fly changes made to frontend.
+
+During a WAR assembly, the plugin runs the @*grunt build*@ command to build the frontend and then a result from the @*dist*@ directory is packaged into the WAR.
+Static assets are served by a *filter* (inspired by the one available in [asset-pipeline-plugin|http://grails.org/plugin/asset-pipeline]) that leverages HTTP cache headers.
+
+h3. Prerequisite
+* The [Yeoman toolset|http://yeoman.io/codelab/setup.html] is installed
+* A Yeoman application in [generated|http://yeoman.io/codelab/scaffold-app.html] in @yo.frontend.dir@ (see _Configuration_) 
+
+h3. <yo:index/>
+Use the @yo:index@ tag to define an entry point for Yeoman's application.
+Most likely you will want to replace Grails @index.html@ content with @<yo:index/>@.
+See [index.html in a dummy Grails app|https://github.com/bgawel/yeoman-frontend/test/dummy-app/grails-app/views/index.html] as an example.
+
+h3. Configuration
+
+The plugin needs no configuration as long as a Yeoman application is placed under @grails-app/frontend@
+
+{table}
+*Property*                | *Type*  | *Default value*                           | *Description*
+@yo.frontend.dir@           | @String@  | @'grails-app/frontend'@                     | Yeoman-generated app directory; this directory should contain @Gruntfile.js@
+{table}
+
+Development settings:
+{table}
+*Property*                | *Type*  | *Default value*                           | *Description*
+@yo.runappcmd.off@          | @Boolean@ | @false@                                     | Set to @false@ if no command should be run with @grails run-app@; alternatively you can pass a property @-Dyo.runappcmd.off=<Boolean>@ with the @run-app@. Useful if you want to run @grunt serve@ outside of plugin
+@yo.runappcmd.exe@          | @String@  | @'grunt serve'@                             | A command to run with @grails run-app@; alternatively you can pass a property @-Dyo.runappcmd.exe=<your command>@ with the @run-app@
+@yo.frontend.app.dir@       | @String@  | @'app'@                                     | Yeoman's source code directory path relative to @yo.frontend.dir@
+@yo.frontend.app.index@     | @String@  | @'index.html'@                              | Index file path relative to @yo.frontend.app.dir@
+@yo.frontend.tmp.dir@       | @String@  | @'.tmp'@                                    | Yeoman's tmp directory path relative to @yo.frontend.dir@; the plugin looks for an asset in this directory if not found in @yo.frontend.app.dir@
+{table}
+
+WAR assembly settings:
+{table}
+*Property*                | *Type*  | *Default value*                           | *Description*
+@yo.warcmd.off@             | @Boolean@ | @false@                                     | Set to @false@ if no command should be run with @grails run-war@ and @grails war@; alternatively you can pass a property @-Dyo.warcmd.off=<Boolean>@ with the Grails command
+@yo.warcmd.exe@             | @String@  | @'grunt build'@                             | A command to run with @grails run-war@ and @grails war@; alternatively you can pass a property @-Dyo.warcmd.exe=<your command>@ with the Grails command
+@yo.frontend.dist.dir@      | @String@  | @'dist'@                                    | Yeoman's distribution directory path relative to @yo.frontend.dir@
+@yo.frontend.dist.exludes@  | @List@    | @\['.htaccess', '404.html', 'robots.txt']@  | Files/directories to exclude from @yo.frontend.dist.dir@ while assembling a WAR
+{table}
+
+Settings of the filter that leverages HTTP cache headers for assets:
+{table}
+*Property*                | *Type*          | *Default value*                           | *Description*
+@yo.filter.off@             | @Boolean@         | @false@                                     | @false@ does not add filter mappings to @web.xml@
+@yo.filter.urlPatterns@     | @List@            | @\['/scripts/\*', '/styles/\*', '/images/\*']@ | URL patterns which the filter is triggered for
+@yo.filter.checkGzip@       | @Boolean@         | @false@                                     | Check if a @.gz@ version of a required asset is available and if so, return it
+@yo.filter.maxAge@          | @Integer@         | @31536000@                                  | Default @max-age@ seconds of the @Cache-Control@ header
+@yo.filter.mimeTypeMaxAge@  | @Map@             | @\[:]@                                      | @max-age@ seconds of the @Cache-Control@ header per MIME type, e.g. @\['text/html':3600]@; if a mapping is not found, return @yo.filter.maxAge@
+@yo.filter.etagStrategy@    | @String/Closure@  | @'filename'@                                | A strategy to retrieve an ETag value for an asset represented as a [org.springframework.core.io.Resource|http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/io/Resource.html], _see a note below_
+@yo.filter.etagPattern@     | @String@          | @'^(\[0-9a-f]+)\\\.\[0-9A-Za-z_.]+\\\..+'@  | A string pattern (@<fingerprint>.<name>.<extension>@) to check for a fingerprint in a file's name for @yo.filter.etagStrategy@=@'lastModifiedIfNotFilename'@ or @'timestampIfNotFilename'@
+{table}
+{note}
+h5. @yo.filter.etagStrategy@:
+* Possible string values (the last three should be used together with @yo.filter.mimeTypeMaxAge@): 
+** @'filename'@ - ETag = file's name; fine if assets' names contain a fingerprint
+** @'timestamp'@ - ETag = timestamp of access
+** @'lastModifiedIfNotFilename'@ - ETag = file's name for fingerprinted assets' names, otherwise last modified date of file
+** @'timestampIfNotFilename'@ - ETag = file's name for fingerprinted assets' names, otherwise timestamp of access.
+* Your custom @Closure@ (available objects: @request, response, resource, applicationContext, servletContext@)
+{note}
+
+h3. Known limitations
+* In the development mode if a new file/directory is created in the *root* directory of @yo.frontend.app.dir@, the file/directory will not be served by the plugin until the application is restarted. New files/directories being added to sub-directories of @yo.frontend.app.dir@ existing prior @run-app@ will be served.
+* Be aware of this [Grails bug|https://jira.grails.org/browse/GRAILS-11229]; the event @eventConfigureTomcat@ must be invoked to run the plugin in the development mode. 
+
+h3. Release History
+
+* Oct 29, 2014
+** 0.1-RC1 - First version (tested on Linux, Windows with Grails versions: 2.3.5, 2.4.3)
