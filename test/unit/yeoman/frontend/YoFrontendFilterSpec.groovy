@@ -1,5 +1,3 @@
-
-
 package yeoman.frontend
 
 import grails.test.mixin.TestMixin
@@ -13,9 +11,9 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 import org.springframework.core.io.Resource
+import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.web.context.WebApplicationContext
 
-import spock.lang.Ignore
 import spock.lang.Specification
 
 @TestMixin(GrailsUnitTestMixin)
@@ -59,7 +57,7 @@ class YoFrontendFilterSpec extends Specification {
         filter.getEtagStrategy.method == 'getEtagAsTimestamp'
     }
 
-    def "check Etag strategy lastModifiedIfNotFilename for signed asset"() {
+    def "check Etag strategy lastModifiedIfNotFilename for a fingerprinted asset"() {
         given:
         def yoFilterConfig = new ConfigObject()
         yoFilterConfig.etagStrategy = 'lastModifiedIfNotFilename'
@@ -74,7 +72,7 @@ class YoFrontendFilterSpec extends Specification {
         filter.getEtagStrategy(resource) == '123a45'
     }
 
-    def "check Etag strategy lastModifiedIfNotFilename for unsigned asset"() {
+    def "check Etag strategy lastModifiedIfNotFilename for a non-fingerprinted asset"() {
         given:
         def yoFilterConfig = new ConfigObject()
         yoFilterConfig.etagStrategy = 'lastModifiedIfNotFilename'
@@ -141,7 +139,6 @@ class YoFrontendFilterSpec extends Specification {
         0 * response.setHeader('ETag', _)
     }
 
-    @Ignore('it hangs at outputStream << resource.inputStream.bytes')
     def "doFilter -> 200"() {
         given:
         filter.getEtagStrategy = filter.&getEtagAsFilename
@@ -149,8 +146,8 @@ class YoFrontendFilterSpec extends Specification {
         filter.mimeTypeMaxAgeMap = [:].withDefault { 100 }
         filter.servletContext = Mock(ServletContext)
         def request = Mock(HttpServletRequest)
-        def response = Mock(HttpServletResponse)
-        2 * request.requestURI >> '/scripts/12345.script.js'
+        def response = Spy(MockHttpServletResponse)
+        1 * request.requestURI >> '/scripts/12345.script.js'
         1 * filter.servletContext.getMimeType('/scripts/12345.script.js') >> 'text/javascript'
         1 * request.contextPath >> '/'
         1 * request.getHeader('If-None-Match') >> '12a45.script.js'
@@ -163,7 +160,7 @@ class YoFrontendFilterSpec extends Specification {
         1 * filter.applicationContext.getResource('scripts/12345.script.js') >> resource
         def resourceGzipped = Mock(Resource)
         1 * resourceGzipped.exists() >> true
-        1 * resourceGzipped.inputStream >> Mock(InputStream)
+        1 * resourceGzipped.inputStream >> new ByteArrayInputStream('resource as stream'.bytes)
         1 * filter.applicationContext.getResource('scripts/12345.script.js.gz') >> resourceGzipped
 
         when:
@@ -176,6 +173,7 @@ class YoFrontendFilterSpec extends Specification {
         1 * response.setContentType('text/javascript')
         1 * response.setHeader('Vary', 'Accept-Encoding')
         1 * response.setHeader('Cache-Control', 'public, max-age=100')
+        new String(response.contentAsByteArray) == 'resource as stream'
     }
 
     def setup() {

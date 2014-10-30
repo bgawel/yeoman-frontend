@@ -38,7 +38,8 @@ class YoFrontendFilter implements Filter {
             ServletException {
         def request = (HttpServletRequest)req
         def response = (HttpServletResponse)res
-        def resourceUri = request.requestURI
+        def requestURI = request.requestURI
+        def resourceUri = requestURI
         def contextPath = request.contextPath
         if (resourceUri.startsWith(contextPath)) {
             resourceUri = resourceUri[contextPath.length()..-1]
@@ -56,7 +57,7 @@ class YoFrontendFilter implements Filter {
                         }
                     }
                 }
-                def mimeType = servletContext.getMimeType(request.requestURI)
+                def mimeType = servletContext.getMimeType(requestURI)
                 def encoding = request.characterEncoding
                 response.with {
                     if (encoding) {

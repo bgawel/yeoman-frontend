@@ -10,14 +10,14 @@ The Yeoman-Frontend is a Grails plugin used for managing and processing a fronte
 
 Installation
 ------------
-##### Dependency
+##### Dependency:
 ```groovy
 	runtime ":yeoman-frontend:0.1-RC1"
 ```
 
 Issues
 ------
-Be aware of this Grails bug https://jira.grails.org/browse/GRAILS-11229; the event eventConfigureTomcat must be invoked to run the plugin in the development mode.
+Be aware of this Grails bug https://jira.grails.org/browse/GRAILS-11229; the event eventConfigureTomcat must be invoked to run the plugin in the Grails development mode.
 
 Documentation
 -------------

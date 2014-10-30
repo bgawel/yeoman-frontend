@@ -6,7 +6,7 @@ Yeoman-Frontend is intended to integrate a frontend developed with Yeoman with a
 
 !overview.png!
 
-The Yeoman build process replaces [resources-plugin|http://grails.org/plugin/resources] or [asset-pipeline-plugin|http://grails.org/plugin/asset-pipeline]
+The Yeoman build process replaces [resources-plugin|http://grails.org/plugin/resources] or [asset-pipeline-plugin|http://grails.org/plugin/asset-pipeline].
 
 In the Grails development mode the plugin runs the @*grunt serve*@ command in the background to allow Grunt's tasks to process on-the-fly changes made to the frontend.
 
@@ -73,7 +73,7 @@ h5. @yo.filter.etagStrategy@:
 
 h3. Known limitations
 * In the development mode if a new file/directory is created in the *root* directory of @yo.frontend.app.dir@, the file/directory will not be served by the plugin until the application is restarted. New files/directories being added to sub-directories of @yo.frontend.app.dir@ existing prior @run-app@ will be served.
-* Be aware of this [Grails bug|https://jira.grails.org/browse/GRAILS-11229]; the event @eventConfigureTomcat@ must be invoked to run the plugin in the development mode. 
+* Be aware of this [Grails bug|https://jira.grails.org/browse/GRAILS-11229]; the event @eventConfigureTomcat@ must be invoked to run the plugin in the Grails development mode. 
 
 h3. Release History
 
