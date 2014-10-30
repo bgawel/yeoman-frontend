@@ -6,7 +6,7 @@ Yeoman-Frontend is intended to integrate a frontend developed with Yeoman with a
 
 !overview.png!
 
-The Yeoman build process replaces [resources-plugin|http://grails.org/plugin/resources] or [asset-pipeline-plugin|http://grails.org/plugin/asset-pipeline].
+The Yeoman build process replaces [resources-plugin|http://grails.org/plugin/resources] or [asset-pipeline-plugin|http://grails.org/plugin/asset-pipeline] but the Yeoman-Frontend can be installed together with the mentioned plugins if you combine client-side and server-side rendering.
 
 In the Grails development mode the plugin runs the @*grunt serve*@ command in the background to allow Grunt's tasks to process on-the-fly changes made to the frontend.
 
@@ -17,7 +17,7 @@ h3. Prerequisite
 * The [Yeoman toolset|http://yeoman.io/codelab/setup.html] is installed
 * A Yeoman application in [generated|http://yeoman.io/codelab/scaffold-app.html] in @yo.frontend.dir@ (see _Configuration_) 
 
-h3. <yo:index/>
+h3. Usage: <yo:index/>
 Use the @yo:index@ tag to define an entry point for the Yeoman application.
 Most likely you will simply replace Grails @index.html@ content with @<yo:index/>@.
 See [index.html|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/views/index.gsp] in [a dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
