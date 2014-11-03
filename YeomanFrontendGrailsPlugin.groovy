@@ -13,7 +13,7 @@ class YeomanFrontendGrailsPlugin {
     def title = "Yeoman Frontend Plugin" // Headline display name of the plugin
     def author = "Bartek Gawel"
     def authorEmail = "bartek.gawel@gmail.com"
-    def description = 'The Yeoman-Frontend is a plugin used for managing and processing frontend developed with Yeoman. The plugin integrates the frontend (preserving the Yeoman\'s directory structure) with a Grails web container during development of Grails backend application; it assembles the frontend into a Web Application Archive (WAR) file during deployment of Grails application.'
+    def description = 'The Yeoman-Frontend is a plugin used for managing and processing a frontend developed with Yeoman. The plugin integrates the frontend (preserving the Yeoman\'s directory structure) with a Grails web container during development of a Grails backend application; it assembles the frontend into a Web Application Archive (WAR) file during deployment of the Grails application.'
 
     // URL to the plugin's documentation
     def documentation = "http://bgawel.github.io/yeoman-frontend/guide/introduction.html"
