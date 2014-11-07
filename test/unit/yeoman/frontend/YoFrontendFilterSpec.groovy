@@ -90,7 +90,7 @@ class YoFrontendFilterSpec extends Specification {
         filter.getEtagStrategy(resource) == '12345'
     }
 
-    def "check Etag strategy timestampIfNotFilename for unsigned asset"() {
+    def "check Etag strategy timestampIfNotFilename for a non-fingerprinted asset"() {
         given:
         def yoFilterConfig = new ConfigObject()
         yoFilterConfig.etagStrategy = 'timestampIfNotFilename'
@@ -108,7 +108,14 @@ class YoFrontendFilterSpec extends Specification {
     def "check custom Etag strategy implemented as closure"() {
         given:
         def yoFilterConfig = new ConfigObject()
-        yoFilterConfig.etagStrategy = { resource -> 'custom etag'}
+        yoFilterConfig.etagStrategy = {
+            assert resource
+            assert request
+            assert response
+            assert applicationContext
+            assert servletContext
+            'custom etag'
+        }
 
         when:
         filter.initEtagStrategy(yoFilterConfig)

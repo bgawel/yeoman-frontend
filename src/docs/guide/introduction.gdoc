@@ -22,6 +22,29 @@ Use the @yo:index@ tag to define an entry point for the Yeoman application.
 Most likely you will simply replace Grails @index.html@ content with @<yo:index/>@.
 See [index.html|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/views/index.gsp] in [a dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
 
+h3. LiveReload
+After issuing the @run-app@ command you will have 2 servers up and running: the Grunt server and the Tomcat server.
+While the Grunt server takes care of processing your changes made to the frontend, Tomcat hosts your fully functional frontend+backend application.
+If you make a change to the frontend (changing @.js@, @.scss@, etc.), you will see a result of your change immediately in a browser accessing the Grunt server (@http://localhost:9000@) because the Grunt server is a live reload server. However all backend calls will fail because the backend is only hosted on Tomcat.
+Tomcat is not a live reload server, so changes made to the frontend are reflected in the browser (@http://localhost:8080/<context>@) after hitting F5.
+
+The simplest way to have the LiveReload feature and the fully functional application at the same time is to access the application on the Grunt server and proxy all requests to Tomcat.
+To achieve this setup you can install the [mode rewrite|https://github.com/tinganho/connect-modrewrite] Grunt component and configure the @livereload@ section of the @connect@ settings in @Gruntfile.js@ as follows (add below snippet to @options@ of @livereload@; remember to update @<context>@ with an appropriate value):
+{code}
+middleware: function(connect, options) {
+  var middlewares = [];
+   
+  middlewares.push(modRewrite(['/(.*)$ http://localhost:8080/<context>/$1 [P]']));
+  options.base.forEach(function(base) {
+    middlewares.push(connect.static(base));
+  });
+  return middlewares;
+}
+{code}
+See [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in [a dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
+
+Now you can type @http://localhost:9000@ and enjoy the LiveReload together with the functional backend.
+
 h3. Configuration
 
 The plugin needs no configuration as long as a Yeoman application is placed under @grails-app/frontend@
