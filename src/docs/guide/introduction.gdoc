@@ -20,7 +20,7 @@ h3. 2. Prerequisite
 h3. 3. Usage: <yo:index/>
 Use the @yo:index@ tag to define an entry point for the Yeoman application.
 Most likely you will simply replace Grails @index.html@ content with @<yo:index/>@.
-See [index.html|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/views/index.gsp] in a [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
+See [index.html|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/views/index.gsp] in a [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] as an example of usage.
 
 h3. 4. LiveReload
 After issuing the @run-app@ command (with the default settings) you will have 2 servers up and running: the Grunt server and the Tomcat server.
@@ -44,7 +44,7 @@ middleware: function(connect, options) {
   return middlewares;
 }
 {code}
-See the [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in the [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
+See the [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in the [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] as an example of usage.
 
 Now you can type @http://localhost:9000@ and enjoy the LiveReload together with the functional backend.
 
@@ -54,9 +54,9 @@ h4. 4.2. LiveReload for the backend
 
 Apart from the configuration for "LiveReload for the frontend" configure the @livereload@ section of the @watch@ settings in the @Gruntfile.js@ as follows (add the following snippet as an entry of @files@; remember to replace @<path-to-root-of-grails-app>@ with an appropriate value): 
 {code}
-'<path-to-root-of-grails-app>/target/classes/{,*/}*.class'
+'<path-to-root-of-grails-app>/target/classes/**/*.class'
 {code}
-See the [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in the [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
+See the [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in the [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] as an example of usage.
 
 Do not specify a path to a directory with Groovy/Java files; the Groovy/Java compiler is slower than a file change watcher, so the browser would be refreshed before a file compilation was finished.  
 
