@@ -1,6 +1,6 @@
 The Grails Yeoman-Frontend is a plugin used for managing and processing a frontend developed with Yeoman. The plugin integrates the frontend (preserving the Yeoman\'s directory structure) with a Grails web container during development of a Grails backend application; it assembles the frontend into a Web Application Archive (WAR) file during deployment of the Grails application.
 
-h3. Introduction
+h3. 1. Introduction
 
 Yeoman-Frontend is intended to integrate a frontend developed with Yeoman with a Grails backend application.
 
@@ -13,23 +13,26 @@ In the Grails development mode the plugin runs the @*grunt serve*@ command in th
 When generating a WAR file the plugin runs the @*grunt build*@ command to build the frontend and a result from the @*dist*@ directory is packaged into the WAR.
 Static assets are served by a *filter* (inspired by the one available in [asset-pipeline-plugin|http://grails.org/plugin/asset-pipeline]) that enables HTTP cache headers.
 
-h3. Prerequisite
+h3. 2. Prerequisite
 * The [Yeoman toolset|http://yeoman.io/codelab/setup.html] is installed
 * A Yeoman application in [generated|http://yeoman.io/codelab/scaffold-app.html] in @yo.frontend.dir@ (see _Configuration_) 
 
-h3. Usage: <yo:index/>
+h3. 3. Usage: <yo:index/>
 Use the @yo:index@ tag to define an entry point for the Yeoman application.
 Most likely you will simply replace Grails @index.html@ content with @<yo:index/>@.
-See [index.html|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/views/index.gsp] in [a dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
+See [index.html|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/views/index.gsp] in a [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
 
-h3. LiveReload
-After issuing the @run-app@ command you will have 2 servers up and running: the Grunt server and the Tomcat server.
+h3. 4. LiveReload
+After issuing the @run-app@ command (with the default settings) you will have 2 servers up and running: the Grunt server and the Tomcat server.
 While the Grunt server takes care of processing your changes made to the frontend, Tomcat hosts your fully functional frontend+backend application.
 If you make a change to the frontend (changing @.js@, @.scss@, etc.), you will see a result of your change immediately in a browser accessing the Grunt server (@http://localhost:9000@) because the Grunt server is a live reload server. However all backend calls will fail because the backend is only hosted on Tomcat.
 Tomcat is not a live reload server, so changes made to the frontend are reflected in the browser (@http://localhost:8080/<context>@) after hitting F5.
 
-The simplest way to have the LiveReload feature and the fully functional application at the same time is to access the application on the Grunt server and proxy all requests to Tomcat.
-To achieve this setup you can install the [mode rewrite|https://github.com/tinganho/connect-modrewrite] Grunt component and configure the @livereload@ section of the @connect@ settings in @Gruntfile.js@ as follows (add below snippet to @options@ of @livereload@; remember to update @<context>@ with an appropriate value):
+!livereloadNoProxy.png!
+
+h4. 4.1. LiveReload for the frontend
+The simplest way to have the LiveReload feature for the frontend and the fully functional application at the same time is to access the application on the Grunt server and proxy all requests to Tomcat.
+To achieve this setup you can install the [mode rewrite|https://github.com/tinganho/connect-modrewrite] Grunt component and configure the @livereload@ section of the @connect@ settings in the @Gruntfile.js@ as follows (add below snippet to @options@ of @livereload@; remember to replace @<context>@ with an appropriate value):
 {code}
 middleware: function(connect, options) {
   var middlewares = [];
@@ -41,20 +44,34 @@ middleware: function(connect, options) {
   return middlewares;
 }
 {code}
-See [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in [a dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
+See the [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in the [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
 
 Now you can type @http://localhost:9000@ and enjoy the LiveReload together with the functional backend.
 
-h3. Configuration
+!livereloadProxy.png!
+
+h4. 4.2. LiveReload for the backend
+
+Apart from the configuration for "LiveReload for the frontend" configure the @livereload@ section of the @watch@ settings in the @Gruntfile.js@ as follows (add below snippet as an entry of @files@; remember to replace @<path-to-root-of-grails-app>@ with an appropriate value): 
+{code}
+'<path-to-root-of-grails-app>/target/classes/{,*/}*.class'
+{code}
+Do not specify a path to a directory with Groovy/Java files; the Groovy/Java compiler is slower than a file change watcher, so the browser would be refreshed before the file compilation was finished.  
+
+See the [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in the [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
+
+!livereloadProxyBackend.png!
+
+h3. 5. Configuration
 
 The plugin needs no configuration as long as a Yeoman application is placed under @grails-app/frontend@
 
 {table}
 *Property*                | *Type*  | *Default value*                           | *Description*
-@yo.frontend.dir@           | @String@  | @'grails-app/frontend'@                     | Yeoman-generated app directory; this directory should contain @Gruntfile.js@
+@yo.frontend.dir@           | @String@  | @'grails-app/frontend'@                     | Yeoman-generated app directory; this directory should contain the @Gruntfile.js@
 {table}
 
-Development mode settings:
+h5. 5.1. Development mode settings:
 {table}
 *Property*                | *Type*  | *Default value*                           | *Description*
 @yo.runappcmd.off@          | @Boolean@ | @false@                                     | Set to @false@ if no command should be run with @grails run-app@; alternatively you can pass a property @-Dyo.runappcmd.off=<Boolean>@ with the @run-app@. Useful if you want to run @grunt serve@ outside of the plugin
@@ -64,7 +81,7 @@ Development mode settings:
 @yo.frontend.tmp.dir@       | @String@  | @'.tmp'@                                    | Yeoman tmp directory path relative to @yo.frontend.dir@; the plugin looks for an asset in this directory if not found in @yo.frontend.app.dir@
 {table}
 
-WAR generation settings:
+h5. 5.2. WAR generation settings:
 {table}
 *Property*                | *Type*  | *Default value*                           | *Description*
 @yo.warcmd.off@             | @Boolean@ | @false@                                     | Set to @false@ if no command should be run with @grails run-war@ and @grails war@; alternatively you can pass a property @-Dyo.warcmd.off=<Boolean>@ with the Grails command
@@ -73,7 +90,7 @@ WAR generation settings:
 @yo.frontend.dist.exludes@  | @List@    | @\['.htaccess', '404.html', 'robots.txt']@  | Files/directories to exclude from @yo.frontend.dist.dir@ when generating a WAR
 {table}
 
-Settings of the filter that enables HTTP cache headers for assets:
+h5. 5.3. Settings of the filter that enables HTTP cache headers for assets:
 {table}
 *Property*                | *Type*          | *Default value*                           | *Description*
 @yo.filter.off@             | @Boolean@         | @false@                                     | @false@ does not add filter's mappings to @web.xml@
@@ -94,11 +111,11 @@ h5. @yo.filter.etagStrategy@:
 * Your custom @Closure@ (available objects: @request, response, resource, applicationContext, servletContext@)
 {note}
 
-h3. Known limitations
+h3. 6. Known limitations
 * In the development mode if a new file/directory is created in the *root* directory of @yo.frontend.app.dir@, the file/directory will not be served by the plugin until the application is restarted. New files/directories being added to sub-directories of @yo.frontend.app.dir@ existing prior @run-app@ will be served.
 * Be aware of this [Grails bug|https://jira.grails.org/browse/GRAILS-11229]; the event @eventConfigureTomcat@ must be invoked to run the plugin in the Grails development mode. 
 
-h3. Release History
+h3. 7. Release History
 
 * Oct 29, 2014
 ** 0.1-RC1 - First version (tested on Linux, Windows with Grails versions: 2.3.5, 2.4.3)
