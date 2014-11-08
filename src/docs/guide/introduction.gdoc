@@ -31,7 +31,7 @@ Tomcat is not a live reload server, so changes made to the frontend are reflecte
 !livereloadNoProxy.png!
 
 h4. 4.1. LiveReload for the frontend
-The simplest way to have the LiveReload feature for the frontend and the fully functional application at the same time is to access the application on the Grunt server and proxy all requests to Tomcat.
+The simplest way to have the LiveReload feature for the frontend and the fully functional application at the same time is to proxy all requests to Tomcat on the Grunt server.
 To achieve this setup you can install the [mode rewrite|https://github.com/tinganho/connect-modrewrite] Grunt component and configure the @livereload@ section of the @connect@ settings in the @Gruntfile.js@ as follows (add the following snippet to @options@ of @livereload@; remember to replace @<context>@ with an appropriate value):
 {code}
 middleware: function(connect, options) {
@@ -56,9 +56,9 @@ Apart from the configuration for "LiveReload for the frontend" configure the @li
 {code}
 '<path-to-root-of-grails-app>/target/classes/{,*/}*.class'
 {code}
-Do not specify a path to a directory with Groovy/Java files; the Groovy/Java compiler is slower than a file change watcher, so the browser would be refreshed before the file compilation was finished.  
-
 See the [Gruntfile.js|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/frontend/Gruntfile.js] in the [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] showing the plugin usage.
+
+Do not specify a path to a directory with Groovy/Java files; the Groovy/Java compiler is slower than a file change watcher, so the browser would be refreshed before a file compilation was finished.  
 
 !livereloadProxyBackend.png!
 
