@@ -32,7 +32,7 @@ Tomcat is not a live reload server, so changes made to the frontend are reflecte
 
 h4. 4.1. LiveReload for the frontend
 The simplest way to have the LiveReload feature for the frontend and the fully functional application at the same time is to access the application on the Grunt server and proxy all requests to Tomcat.
-To achieve this setup you can install the [mode rewrite|https://github.com/tinganho/connect-modrewrite] Grunt component and configure the @livereload@ section of the @connect@ settings in the @Gruntfile.js@ as follows (add below snippet to @options@ of @livereload@; remember to replace @<context>@ with an appropriate value):
+To achieve this setup you can install the [mode rewrite|https://github.com/tinganho/connect-modrewrite] Grunt component and configure the @livereload@ section of the @connect@ settings in the @Gruntfile.js@ as follows (add the following snippet to @options@ of @livereload@; remember to replace @<context>@ with an appropriate value):
 {code}
 middleware: function(connect, options) {
   var middlewares = [];
@@ -52,7 +52,7 @@ Now you can type @http://localhost:9000@ and enjoy the LiveReload together with 
 
 h4. 4.2. LiveReload for the backend
 
-Apart from the configuration for "LiveReload for the frontend" configure the @livereload@ section of the @watch@ settings in the @Gruntfile.js@ as follows (add below snippet as an entry of @files@; remember to replace @<path-to-root-of-grails-app>@ with an appropriate value): 
+Apart from the configuration for "LiveReload for the frontend" configure the @livereload@ section of the @watch@ settings in the @Gruntfile.js@ as follows (add the following snippet as an entry of @files@; remember to replace @<path-to-root-of-grails-app>@ with an appropriate value): 
 {code}
 '<path-to-root-of-grails-app>/target/classes/{,*/}*.class'
 {code}
