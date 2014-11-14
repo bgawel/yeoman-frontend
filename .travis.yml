@@ -1,2 +1,3 @@
 language: groovy
+install: mvn install -Dskip=true -DskipTests=true -Dmaven.javadoc.skip=true
 script: ./grailsw refresh-dependencies && ./grailsw test-app
