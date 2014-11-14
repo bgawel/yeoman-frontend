@@ -32,4 +32,5 @@
 .project
 .classpath
 .settings
+*.sha1
 *~

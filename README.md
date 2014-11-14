@@ -12,7 +12,7 @@ Installation
 ------------
 ##### Dependency:
 ```groovy
-	runtime ":yeoman-frontend:0.1-RC1"
+	runtime ":yeoman-frontend:0.2"
 ```
 
 Issues
@@ -23,7 +23,9 @@ Documentation
 -------------
 http://bgawel.github.io/yeoman-frontend/guide/introduction.html
 
-Last release: Oct 29, 2014
+Last release: Nov 14, 2014
 --------------------------
-0.1-RC1 - First version (tested on Linux, Windows with Grails versions: 2.3.5, 2.4.3)
+0.2 - version 0.1 was published to Grails repository with invalid POM file; see https://github.com/bgawel/yeoman-frontend/issues/1
+0.1 - same as 0.1-RC1; the plugin was approved in the Pending Plugin portal
+0.1-RC1 - first version (tested on Linux, Windows with Grails versions: 2.3.5, 2.4.3)
 

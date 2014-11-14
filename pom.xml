@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns='http://maven.apache.org/POM/4.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd'>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.grails.plugins</groupId>
+  <artifactId>yeoman-frontend</artifactId>
+  <packaging>zip</packaging>
+  <version>0.2</version>
+  <name>Yeoman Frontend Plugin</name>
+  <description>The Yeoman-Frontend is a plugin used for managing and processing a frontend developed with Yeoman. The plugin integrates the frontend (preserving the Yeoman's directory structure) with a Grails web container during development of a Grails backend application; it assembles the frontend into a Web Application Archive (WAR) file during deployment of the Grails application.</description>
+  <url>http://bgawel.github.io/yeoman-frontend/guide/introduction.html</url>
+  <licenses>
+    <license>
+      <name>Apache License 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>Bartek Gawel</name>
+      <email>bartek.gawel@gmail.com</email>
+    </developer>
+  </developers>
+  <issueManagement>
+    <system>GITHUB</system>
+    <url>https://github.com/bgawel/yeoman-frontend/issues</url>
+  </issueManagement>
+  <scm>
+    <url>https://github.com/bgawel/yeoman-frontend/</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.grails.plugins</groupId>
+      <artifactId>webxml</artifactId>
+      <version>1.4.1</version>
+      <type>zip</type>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>

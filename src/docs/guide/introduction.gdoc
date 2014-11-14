@@ -17,12 +17,18 @@ h3. 2. Prerequisite
 * The [Yeoman toolset|http://yeoman.io/codelab/setup.html] is installed
 * A Yeoman application in [generated|http://yeoman.io/codelab/scaffold-app.html] in @yo.frontend.dir@ (see _Configuration_) 
 
-h3. 3. Usage: <yo:index/>
+h3. 3. Installation
+Add to @BuildConfig.groovy@:
+{code}
+runtime ':yeoman-frontend:0.2'
+{code}
+
+h3. 4. Usage: <yo:index/>
 Use the @yo:index@ tag to define an entry point for the Yeoman application.
 Most likely you will simply replace Grails @index.html@ content with @<yo:index/>@.
 See [index.html|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app/grails-app/views/index.gsp] in a [dummy Grails app|https://github.com/bgawel/yeoman-frontend/blob/master/test/dummy-app] as an example of usage.
 
-h3. 4. LiveReload
+h3. 5. LiveReload
 After issuing the @run-app@ command (with the default settings) you will have 2 servers up and running: the Grunt server and the Tomcat server.
 While the Grunt server takes care of processing your changes made to the frontend, Tomcat hosts your fully functional frontend+backend application.
 If you make a change to the frontend (changing @.js@, @.scss@, etc.), you will see a result of your change immediately in a browser accessing the Grunt server (@http://localhost:9000@) because the Grunt server is a live reload server. However all backend calls will fail because the backend is only hosted on Tomcat.
@@ -30,7 +36,7 @@ Tomcat is not a live reload server, so changes made to the frontend are reflecte
 
 !livereloadNoProxy.png!
 
-h4. 4.1. LiveReload for the frontend
+h4. 5.1. LiveReload for the frontend
 The simplest way to have the LiveReload feature for the frontend and the fully functional application at the same time is to proxy all requests to Tomcat on the Grunt server.
 To achieve this setup you can install the [mode rewrite|https://github.com/tinganho/connect-modrewrite] Grunt component and configure the @livereload@ section of the @connect@ settings in the @Gruntfile.js@ as follows (add the following snippet to @options@ of @livereload@; remember to replace @<context>@ with an appropriate value):
 {code}
@@ -50,7 +56,7 @@ Now you can type @http://localhost:9000@ and enjoy the LiveReload together with 
 
 !livereloadProxy.png!
 
-h4. 4.2. LiveReload for the backend
+h4. 5.2. LiveReload for the backend
 
 Apart from the configuration for "LiveReload for the frontend" configure the @livereload@ section of the @watch@ settings in the @Gruntfile.js@ as follows (add the following snippet as an entry of @files@; remember to replace @<path-to-root-of-grails-app>@ with an appropriate value): 
 {code}
@@ -62,7 +68,7 @@ Do not specify a path to a directory with Groovy/Java files; the Groovy/Java com
 
 !livereloadProxyBackend.png!
 
-h3. 5. Configuration
+h3. 6. Configuration
 
 The plugin needs no configuration as long as a Yeoman application is placed under @grails-app/frontend@
 
@@ -71,7 +77,7 @@ The plugin needs no configuration as long as a Yeoman application is placed unde
 @yo.frontend.dir@           | @String@  | @'grails-app/frontend'@                     | Yeoman-generated app directory; this directory should contain the @Gruntfile.js@
 {table}
 
-h5. 5.1. Development mode settings:
+h5. 6.1. Development mode settings:
 {table}
 *Property*                | *Type*  | *Default value*                           | *Description*
 @yo.runappcmd.off@          | @Boolean@ | @false@                                     | Set to @false@ if no command should be run with @grails run-app@; alternatively you can pass a property @-Dyo.runappcmd.off=<Boolean>@ with the @run-app@. Useful if you want to run @grunt serve@ outside of the plugin
@@ -81,7 +87,7 @@ h5. 5.1. Development mode settings:
 @yo.frontend.tmp.dir@       | @String@  | @'.tmp'@                                    | Yeoman tmp directory path relative to @yo.frontend.dir@; the plugin looks for an asset in this directory if not found in @yo.frontend.app.dir@
 {table}
 
-h5. 5.2. WAR generation settings:
+h5. 6.2. WAR generation settings:
 {table}
 *Property*                | *Type*  | *Default value*                           | *Description*
 @yo.warcmd.off@             | @Boolean@ | @false@                                     | Set to @false@ if no command should be run with @grails run-war@ and @grails war@; alternatively you can pass a property @-Dyo.warcmd.off=<Boolean>@ with the Grails command
@@ -90,7 +96,7 @@ h5. 5.2. WAR generation settings:
 @yo.frontend.dist.exludes@  | @List@    | @\['.htaccess', '404.html', 'robots.txt']@  | Files/directories to exclude from @yo.frontend.dist.dir@ when generating a WAR
 {table}
 
-h5. 5.3. Settings of the filter that enables HTTP cache headers for assets:
+h5. 6.3. Settings of the filter that enables HTTP cache headers for assets:
 {table}
 *Property*                | *Type*          | *Default value*                           | *Description*
 @yo.filter.off@             | @Boolean@         | @false@                                     | @false@ does not add filter's mappings to @web.xml@
@@ -111,11 +117,15 @@ h5. @yo.filter.etagStrategy@:
 * Your custom @Closure@ (available objects: @request, response, resource, applicationContext, servletContext@)
 {note}
 
-h3. 6. Known limitations
+h3. 7. Known limitations
 * In the development mode if a new file/directory is created in the *root* directory of @yo.frontend.app.dir@, the file/directory will not be served by the plugin until the application is restarted. New files/directories being added to sub-directories of @yo.frontend.app.dir@ existing prior @run-app@ will be served.
 * Be aware of this [Grails bug|https://jira.grails.org/browse/GRAILS-11229]; the event @eventConfigureTomcat@ must be invoked to run the plugin in the Grails development mode. 
 
-h3. 7. Release History
+h3. 8. Release History
 
+* Nov 14, 2014
+** 0.2 - version 0.1 was published to Grails repository with invalid POM file; see this [bug #1|https://github.com/bgawel/yeoman-frontend/issues/1]
+* Nov 14, 2014
+** 0.1 - same as 0.1-RC1; the plugin was approved in the Pending Plugin portal
 * Oct 29, 2014
-** 0.1-RC1 - First version (tested on Linux, Windows with Grails versions: 2.3.5, 2.4.3)
+** 0.1-RC1 - first version (tested on Linux, Windows with Grails versions: 2.3.5, 2.4.3)
