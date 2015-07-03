@@ -4,7 +4,7 @@
   <groupId>org.grails.plugins</groupId>
   <artifactId>yeoman-frontend</artifactId>
   <packaging>zip</packaging>
-  <version>0.2</version>
+  <version>0.3</version>
   <name>Yeoman Frontend Plugin</name>
   <description>The Yeoman-Frontend is a plugin used for managing and processing a frontend developed with Yeoman. The plugin integrates the frontend (preserving the Yeoman's directory structure) with a Grails web container during development of a Grails backend application; it assembles the frontend into a Web Application Archive (WAR) file during deployment of the Grails application.</description>
   <url>http://bgawel.github.io/yeoman-frontend/guide/introduction.html</url>
