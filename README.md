@@ -12,7 +12,7 @@ Installation
 ------------
 ##### Dependency:
 ```groovy
-	runtime ":yeoman-frontend:0.2"
+	runtime ":yeoman-frontend:0.3"
 ```
 
 Issues

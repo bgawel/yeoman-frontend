@@ -59,16 +59,14 @@ class YoFrontendFilter implements Filter {
                 }
                 def mimeType = servletContext.getMimeType(requestURI)
                 def encoding = request.characterEncoding
-                response.with {
-                    if (encoding) {
-                        setCharacterEncoding(encoding)
-                    }
-                    setContentType(mimeType)
-                    setHeader('Vary', 'Accept-Encoding')
-                    setHeader('Cache-Control', "public, max-age=${mimeTypeMaxAgeMap[mimeType]}")
-                    outputStream << resource.inputStream.bytes
-                    flushBuffer()
+                if (encoding) {
+                    response.setCharacterEncoding(encoding)
                 }
+                response.setContentType(mimeType)
+                response.setHeader('Vary', 'Accept-Encoding')
+                response.setHeader('Cache-Control', "public, max-age=${mimeTypeMaxAgeMap[mimeType]}")
+                response.outputStream << resource.inputStream.bytes
+                response.flushBuffer()
             }
         }
         if (!res.committed) {
