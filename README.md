@@ -23,7 +23,8 @@ Documentation
 -------------
 http://bgawel.github.io/yeoman-frontend/guide/introduction.html
 
-Last release: Nov 14, 2014
+Last release: July 4, 2015
 --------------------------
+0.3 - made the plugin work with Grails 2.5.0
 0.2 - version 0.1 was published to Grails repository with invalid POM file; see https://github.com/bgawel/yeoman-frontend/issues/1
 
