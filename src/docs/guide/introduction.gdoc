@@ -20,7 +20,7 @@ h3. 2. Prerequisite
 h3. 3. Installation
 Add to @BuildConfig.groovy@:
 {code}
-runtime ':yeoman-frontend:0.2'
+runtime ':yeoman-frontend:0.3'
 {code}
 
 h3. 4. Usage: <yo:index/>
@@ -123,6 +123,8 @@ h3. 7. Known limitations
 
 h3. 8. Release History
 
+* Jul 4, 2015
+** 0.3 - made the plugin work with Grails 2.5.0 
 * Nov 14, 2014
 ** 0.2 - version 0.1 was published to Grails repository with invalid POM file; see this [bug #1|https://github.com/bgawel/yeoman-frontend/issues/1]
 * Nov 14, 2014
